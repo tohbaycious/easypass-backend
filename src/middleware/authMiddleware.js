@@ -17,13 +17,13 @@ const protect = async (req, res, next) => {
     });
     
     // 1. First try to get token from cookies
-    if (req.cookies?.token) {
+    if (req.cookies.token) {
         token = req.cookies.token;
         tokenSource = 'cookie';
         console.log('🔑 Token found in cookies');
     } 
     // 2. Then try to get token from Authorization header
-    else if (req.headers.authorization?.startsWith('Bearer ')) {
+    else if (req.headers.authorization.startsWith('Bearer ')) {
         token = req.headers.authorization.split(' ')[1];
         tokenSource = 'authorization_header';
         console.log('🔑 Token found in Authorization header');
@@ -68,8 +68,8 @@ const protect = async (req, res, next) => {
             
             // First, decode without verification to see the content
             const unverified = jwt.decode(token, { complete: true });
-            console.log('🔍 Unverified token header:', unverified?.header);
-            console.log('🔍 Unverified token payload:', unverified?.payload);
+            console.log('🔍 Unverified token header:', unverified.header);
+            console.log('🔍 Unverified token payload:', unverified.payload);
             
             // Now verify the token with all possible claims
             const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret', {

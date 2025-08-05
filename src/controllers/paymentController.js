@@ -34,7 +34,7 @@ export const webhookHandler = async (req, res) => {
         res.status(400).json({
             success: false,
             message: error.message || 'Payment processing failed',
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            // 
         });
     }
 };
@@ -87,7 +87,7 @@ export const simulatePayment = async (req, res) => {
         res.status(400).json({
             success: false,
             message: error.message || 'Failed to simulate payment',
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            
         });
     }
 };
@@ -100,8 +100,8 @@ export const simulatePayment = async (req, res) => {
 export const getPaymentById = async (req, res) => {
     try {
         const { id: paymentId } = req.params;
-        const userId = req.user?._id;
-        const qrCodeToken = req.user?.qrCodeToken;
+        const userId = req.user._id;
+        const qrCodeToken = req.user.qrCodeToken;
 
         // Validate input
         if (!paymentId) {
@@ -138,7 +138,7 @@ export const getPaymentById = async (req, res) => {
         res.status(statusCode).json({
             success: false,
             message: error.message || 'Failed to fetch payment',
-            error: process.env.NODE_ENV === 'development' ? error.stack : undefined
+            
         });
     }
 };
@@ -158,7 +158,7 @@ export const verifyPayment = async (req, res) => {
     
     try {
         const { reference } = req.body;
-        const userId = req.user?._id;
+        const userId = req.user._id;
         
         // Log detailed request information
         console.log('🔍 [verifyPayment] Request details:', { 
@@ -178,7 +178,7 @@ export const verifyPayment = async (req, res) => {
         
         // Log the full user object for debugging (sensitive fields redacted)
         if (req.user) {
-            const { password, resetPasswordToken, resetPasswordExpire, ...safeUser } = req.user.toObject ? req.user.toObject() : req.user;
+            const { password, resetPasswordToken, resetPasswordExpire, ...safeUser } = req.user.toObject() ? req.user.toObject() : req.user;
             console.log('🔍 [verifyPayment] Authenticated user:', {
                 _id: safeUser._id,
                 email: safeUser.email,
@@ -245,8 +245,8 @@ export const verifyPayment = async (req, res) => {
             result = await verifyPaymentWithPaystack(reference, userId);
             console.log('✅ [verifyPayment] verifyPaymentWithPaystack result:', {
                 success: true,
-                paymentId: result.payment?._id,
-                status: result.payment?.status,
+                paymentId: result.payment._id,
+                status: result.payment.status,
                 timestamp: new Date().toISOString()
             });
             
@@ -299,15 +299,15 @@ export const verifyPayment = async (req, res) => {
             stack: error.stack,
             code: error.code,
             statusCode: error.statusCode || error.status,
-            response: error.response?.data,
+            response: error.response.data,
             request: {
-                method: error.config?.method,
-                url: error.config?.url,
-                headers: error.config?.headers ? {
+                method: error.config.method,
+                url: error.config.url,
+                headers: error.config.headers ? {
                     ...error.config.headers,
                     authorization: error.config.headers.authorization ? 'Bearer [REDACTED]' : undefined
                 } : undefined,
-                data: error.config?.data
+                data: error.config.data
             }
         });
         
@@ -317,8 +317,8 @@ export const verifyPayment = async (req, res) => {
                           error.message.includes('jwt') ||
                           error.message.includes('token');
         
-        const statusCode = error.response?.status || isAuthError ? 401 : 500;
-        const errorMessage = error.response?.data?.message || 
+        const statusCode = error.response.status || isAuthError ? 401 : 500;
+        const errorMessage = error.response.data.message || 
                            (isAuthError ? 'Authentication failed. Please log in again.' : 
                             error.message || 'Payment verification failed');
         
@@ -346,8 +346,8 @@ export const verifyPayment = async (req, res) => {
 export const hasPaidToday = async (req, res) => {
     try {
         const { userId } = req.params;
-        const authUserId = req.user?._id?.toString();
-        const qrCodeToken = req.user?.qrCodeToken;
+        const authUserId = req.user._id.toString();
+        const qrCodeToken = req.user.qrCodeToken;
 
         console.log({ authUserId, userId, qrCodeToken })
         
@@ -375,7 +375,7 @@ export const hasPaidToday = async (req, res) => {
         }
 
         const checkPaymentStatus = async () => {
-            if (!req.user?._id) {
+            if (!req.user._id) {
                 console.error('No user ID available');
                 throw new Error('User not authenticated');
             }
@@ -420,8 +420,8 @@ export const getPaymentHistory = async (req, res) => {
     console.log("history request>>>>>", { user: req.user });
     try {
         // Get user from JWT token (already verified by auth middleware)
-        const userId = req.user?._id;
-        const qrCodeToken = req.user?.qrCodeToken;
+        const userId = req.user._id;
+        const qrCodeToken = req.user.qrCodeToken;
 
         console.log("userId", userId);
         console.log("qrCodeToken", qrCodeToken);
@@ -463,7 +463,7 @@ export const getPaymentHistory = async (req, res) => {
 
         console.log('Payment history retrieved successfully:', {
             userId: userId,
-            count: result.data?.length,
+            count: result.data.length,
             page,
             limit,
             totalPages: result.totalPages
@@ -478,7 +478,7 @@ export const getPaymentHistory = async (req, res) => {
         res.status(400).json({
             success: false,
             message: 'Failed to fetch payment history',
-            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+            
         });
     }
 };

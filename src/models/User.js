@@ -71,8 +71,8 @@ userSchema.pre('save', async function(next) {
 // Method to compare password for login
 userSchema.methods.matchPassword = async function(enteredPassword) {
     console.log('🔑 matchPassword called');
-    console.log('   Entered password length:', enteredPassword?.length || 0);
-    console.log('   Stored password hash length:', this.password?.length || 0);
+    console.log('   Entered password length:', enteredPassword.length || 0);
+    console.log('   Stored password hash length:', this.password.length || 0);
     console.log('   Stored hash prefix:', this.password ? this.password.substring(0, 10) + '...' : 'none');
     
     if (!enteredPassword || !this.password) {

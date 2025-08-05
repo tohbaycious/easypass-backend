@@ -29,7 +29,7 @@ async function testPasswordComparison(email, password) {
         console.log('- ID:', user._id);
         console.log('- Email:', user.email);
         console.log('- Has password:', !!user.password);
-        console.log('- Password hash length:', user.password?.length || 0);
+        console.log('- Password hash length:', user.password ? user.password.length : 0);
         
         if (user.password) {
             console.log('\n🔑 Password hash analysis:');
