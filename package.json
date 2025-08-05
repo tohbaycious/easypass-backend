@@ -5,8 +5,16 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node dist/server.js",
     "dev": "nodemon src/server.js",
+    "build": "npm run clean && npm run build:js",
+    "build:js": "babel src --out-dir dist --extensions \".js,.jsx,.ts,.tsx\" --copy-files",
+    "clean": "rimraf dist",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "prepare": "npm run build",
+    "prestart": "npm run build",
+    "pretest": "npm run lint",
     "test": "cross-env NODE_ENV=test mocha --timeout 10000 --exit --require test/test-setup.js --recursive test/**/*.test.js"
   },
   "keywords": [],
@@ -26,6 +34,9 @@
     "mongoose": "^8.16.5",
     "qrcode": "^1.5.4",
     "uuid": "^11.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   },
   "devDependencies": {
     "chai": "^5.2.1",
