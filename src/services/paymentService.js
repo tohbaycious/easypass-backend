@@ -589,7 +589,7 @@ const verifyPaymentWithPaystack = async (reference, userId) => {
             message: error.message,
             stack: error.stack,
             code: error.code,
-            response: error.response.data
+            response: error.response ? error.response.data : undefined
         });
         
         // Handle Axios errors
@@ -597,7 +597,7 @@ const verifyPaymentWithPaystack = async (reference, userId) => {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
             const { status, data } = error.response;
-            const errorMessage = data.message || 'Payment verification failed';
+            const errorMessage = (data && data.message) ? data.message : 'Payment verification failed';
             const err = new Error(`Paystack API error (${status}): ${errorMessage}`);
             err.statusCode = status;
             err.isOperational = true;
