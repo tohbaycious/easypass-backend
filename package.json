@@ -9,7 +9,7 @@
     "dev": "nodemon src/server.js",
     "build": "npm run clean && npm run build:js",
     "build:js": "babel src --out-dir dist --extensions \".js,.jsx,.ts,.tsx\" --copy-files",
-    "clean": "rimraf dist",
+    "clean": "node -e \"const fs = require('fs'); const path = require('path'); const dir = 'dist'; if (fs.existsSync(dir)) { fs.rmSync(dir, { recursive: true, force: true }); }\" && echo 'Cleaned dist directory'",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "prepare": "npm run build",
@@ -22,6 +22,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^1.11.0",
+    "babel": "^5.8.38",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -33,6 +34,7 @@
     "mongodb": "^6.18.0",
     "mongoose": "^8.16.5",
     "qrcode": "^1.5.4",
+    "rimraf": "^6.0.1",
     "uuid": "^11.1.0"
   },
   "engines": {
@@ -44,7 +46,6 @@
     "mocha": "^11.7.1",
     "mongodb-memory-server": "^10.1.4",
     "nodemon": "^3.0.1",
-    "rimraf": "^6.0.1",
     "supertest": "^7.1.4"
   }
 }
