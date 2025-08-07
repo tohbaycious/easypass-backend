@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import userRoutes from '../routes/userRoutes.js';
+import authRoutes from '../routes/authRoutes.js';
 import paymentRoutes from '../routes/paymentRoutes.js';
 import { notFoundHandler, globalErrorHandler } from '../middleware/errorHandler.js';
 import connectDB from '../config/db.js';
@@ -105,6 +106,9 @@ const createApp = async () => {
     // API Routes
     app.use('/api/users', userRoutes);
     app.use('/api/payments', paymentRoutes);
+    
+    // Authentication Routes (register and login)
+    app.use('', authRoutes);
 
     // Health check endpoint
     app.get('/health', (req, res) => {

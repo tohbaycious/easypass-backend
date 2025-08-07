@@ -1,13 +1,8 @@
 import express from 'express';
-import { registerUser, authUser, getUsers, getUserById, getUserByQrToken } from '../controllers/userController.js';
+import { getUsers, getUserById, getUserByQrToken } from '../controllers/userController.js';
 import { protect } from '../middleware/authMiddleware.js';
-import { validateRegisterUser, validateAuthUser } from '../middleware/validation.js';
 
 const router = express.Router();
-
-// Authentication routes
-router.post('/register', validateRegisterUser, registerUser);  // Register a new user
-router.post('/login', validateAuthUser, authUser);             // Authenticate user & get token
 
 // QR code route (public)
 router.get('/qr/:token', getUserByQrToken); // Get user by QR code token

@@ -120,13 +120,13 @@ export const registerUser = async (userData) => {
 };
 
 /**
- * Authenticate a user
+ * Login a user
  * @param {string} email - User's email
  * @param {string} password - User's password
  * @returns {Promise<Object>} User data with token
- * @throws {Error} If authentication fails or input is invalid
+ * @throws {Error} If login fails or input is invalid
  */
-export const authUser = async (email, password) => {
+export const loginUser = async (email, password) => {
     console.log('Auth attempt for email:', email);
     
     // Input validation
