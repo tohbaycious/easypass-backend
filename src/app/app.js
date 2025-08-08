@@ -103,13 +103,13 @@ const createApp = async () => {
         });
     }
 
-    // API Routes
-    app.use('/api/users', userRoutes);
-    app.use('/api/payments', paymentRoutes);
-    
     // Authentication Routes (register and login)
     app.use('', authRoutes);
 
+    // API Routes
+    app.use('/users', userRoutes);
+    app.use('/payments', paymentRoutes);
+    
     // Health check endpoint
     app.get('/health', (req, res) => {
         res.status(200).json({ 
